@@ -19,6 +19,7 @@
     "@types/react-router": "^5.1.13",
     "@types/react-router-dom": "^5.1.7",
     "clsx": "^1.1.1",
+    "firebase": "^8.6.7",
     "framer-motion": "^4.1.17",
     "lodash": "^4.17.21",
     "notistack": "^1.0.9",

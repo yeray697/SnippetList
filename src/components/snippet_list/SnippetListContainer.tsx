@@ -1,12 +1,15 @@
-import { Theme, Typography } from '@material-ui/core';
+import { Button, Theme, Typography } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
+import { SnackbarKey, useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Snippet from '../../model/snippet';
+import { editSnippet, removeSnippet } from '../../service/snippetService';
 import Search from './Search';
 import SnippetList from './SnippetList';
 
 type ListProps = {
-  items: Snippet[];
+  items: Snippet[] | undefined;
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,22 +29,64 @@ const useStyles = makeStyles((theme: Theme) =>
     pinnedItems: {
       marginBottom: theme.spacing(8),
     },
+    snackbarButton: {
+      color: '#FFFFFF', //ToDo Theme
+    },
   })
 );
 
 const SnippetListContainer = ({ items }: ListProps) => {
   const classes = useStyles();
-  const [pinnedItems, setPinnedItems] = useState(items.filter(i => i.pinned));
+  const snackbar = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
+  const [pinnedItems, setPinnedItems] = useState(items?.filter(i => i.pinned));
   const [nonPinnedItems, setNonPinnedItems] = useState(
-    items.filter(i => !i.pinned)
+    items?.filter(i => !i.pinned)
   );
 
-  function onPinnedItemChange(id: number, isPinned: boolean) {
-    let aux = items.find(i => i.id === id);
-    if (aux) aux.pinned = isPinned;
-    setPinnedItems(items.filter(i => i.pinned));
-    setNonPinnedItems(items.filter(i => !i.pinned));
+  function onPinnedItemChange(id: string, isPinned: boolean) {
+    let aux = items?.find(i => i.id === id);
+    if (aux) {
+      aux.pinned = isPinned;
+      editSnippet(aux);
+    }
+    setPinnedItems(items?.filter(i => i.pinned));
+    setNonPinnedItems(items?.filter(i => !i.pinned));
   }
+
+  function onCopyButtonClicked(content: string) {
+    //ToDo Copy to clipboard
+    enqueueSnackbar('Copied!', {
+      variant: 'info',
+      action: key => (
+        <Button
+          onClick={() => onSnackbarClickDismiss(key)}
+          className={classes.snackbarButton}
+        >
+          Dismiss
+        </Button>
+      ),
+      autoHideDuration: 2500,
+    });
+  }
+
+  function onEditButtonClicked(id: string) {
+    history.push('/snippet/edit/' + id.toString());
+  }
+
+  function onDeleteButtonClicked(id: string) {
+    //ToDo Dialog to confirm the action
+    //This will be commented until the dialog to confirm the delete is done
+    //Maybe modify the hard delete and use a soft delete?
+    //It's working tho
+    //removeSnippet(id);
+  }
+
+  const onSnackbarClickDismiss = (key: SnackbarKey) => {
+    snackbar.closeSnackbar(key);
+  };
+
   return (
     <div>
       <Search availableTags={['tag1', 'tag2']} />
@@ -53,6 +98,9 @@ const SnippetListContainer = ({ items }: ListProps) => {
           <SnippetList
             items={pinnedItems}
             onPinnedItemChange={onPinnedItemChange}
+            onCopyButtonClicked={onCopyButtonClicked}
+            onEditButtonClicked={onEditButtonClicked}
+            onDeleteButtonClicked={onDeleteButtonClicked}
           />
         </div>
       )}
@@ -69,6 +117,9 @@ const SnippetListContainer = ({ items }: ListProps) => {
             <SnippetList
               items={nonPinnedItems}
               onPinnedItemChange={onPinnedItemChange}
+              onCopyButtonClicked={onCopyButtonClicked}
+              onEditButtonClicked={onEditButtonClicked}
+              onDeleteButtonClicked={onDeleteButtonClicked}
             />
           </div>
         )}

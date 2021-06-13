@@ -5,6 +5,9 @@ import Home from './pages/home/Home';
 import SnippetPage from './pages/snippet/Snippet';
 import { Container } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
+import { initFirebase } from './service/firebase/firebaseManager';
+
+initFirebase();
 
 function App() {
   return (

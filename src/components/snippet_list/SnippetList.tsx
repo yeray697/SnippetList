@@ -6,7 +6,10 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 
 type ListProps = {
   items: Snippet[];
-  onPinnedItemChange(id: number, isPinned: boolean): void;
+  onPinnedItemChange(id: string, isPinned: boolean): void;
+  onCopyButtonClicked(script: string): void;
+  onEditButtonClicked(id: string): void;
+  onDeleteButtonClicked(id: string): void;
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,7 +29,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const SnippetList = ({ items, onPinnedItemChange }: ListProps) => {
+const SnippetList = ({
+  items,
+  onPinnedItemChange,
+  onCopyButtonClicked,
+  onEditButtonClicked,
+  onDeleteButtonClicked,
+}: ListProps) => {
   const classes = useStyles();
   const theme = useTheme<Theme>();
   return (
@@ -45,6 +54,9 @@ const SnippetList = ({ items, onPinnedItemChange }: ListProps) => {
               tags={item.tags}
               isPinned={item.pinned}
               onPinnedItemChange={onPinnedItemChange}
+              onCopyButtonClicked={onCopyButtonClicked}
+              onEditButtonClicked={onEditButtonClicked}
+              onDeleteButtonClicked={onDeleteButtonClicked}
             />
           </motion.div>
         ))}

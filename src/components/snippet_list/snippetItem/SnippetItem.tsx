@@ -1,30 +1,25 @@
-import {
-  Button,
-  createStyles,
-  makeStyles,
-  Theme,
-  Typography,
-} from '@material-ui/core';
+import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Section from './Section';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import EditIcon from '@material-ui/icons/Edit';
 import { useState } from 'react';
-import { SnackbarKey, useSnackbar } from 'notistack';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useHistory } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import { MenuActions } from './MenuFooter';
 
 type Props = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   tags: string[];
   isPinned: boolean;
-  onPinnedItemChange(id: number, isPinned: boolean): void;
+  onPinnedItemChange(id: string, isPinned: boolean): void;
+  onCopyButtonClicked(script: string): void;
+  onEditButtonClicked(id: string): void;
+  onDeleteButtonClicked(id: string): void;
 };
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,9 +37,6 @@ const useStyles = makeStyles((theme: Theme) =>
       '-webkit-line-clamp': 4,
       '-webkit-box-orient': 'vertical',
     },
-    snackbarButton: {
-      color: '#FFFFFF', //ToDo Theme
-    },
   })
 );
 
@@ -55,13 +47,13 @@ const SnippetItem = ({
   tags,
   isPinned,
   onPinnedItemChange,
+  onCopyButtonClicked,
+  onEditButtonClicked,
+  onDeleteButtonClicked,
 }: Props) => {
   const classes = useStyles();
-  const history = useHistory();
 
-  const snackbar = useSnackbar();
   const [pinned, setPinned] = useState(isPinned);
-  const { enqueueSnackbar } = useSnackbar();
 
   const actions: MenuActions[] = [
     {
@@ -84,41 +76,30 @@ const SnippetItem = ({
       icon: <DeleteIcon color="action" />,
     },
   ];
-  const onSnackbarClickDismiss = (key: SnackbarKey) => {
-    snackbar.closeSnackbar(key);
-  };
 
   function handleMenuItemClick(action: string) {
     switch (action) {
       case 'Edit':
-        history.push('/snippet/edit/' + id.toString());
+        onEditButtonClicked(id);
         break;
       case 'Like':
         setPinned(!pinned);
         isPinned = !pinned;
         onPinnedItemChange(id, isPinned);
         break;
+      case 'Delete':
+        onDeleteButtonClicked(id);
+        break;
     }
   }
 
-  function onCopyButtonClicked() {
-    enqueueSnackbar('Copied!', {
-      variant: 'info',
-      action: key => (
-        <Button
-          onClick={() => onSnackbarClickDismiss(key)}
-          className={classes.snackbarButton}
-        >
-          Dismiss
-        </Button>
-      ),
-      autoHideDuration: 2500,
-    });
+  function onCopyButtonClick() {
+    onCopyButtonClicked(title); //ToDo: this should be the snippet content.
   }
 
   return (
     <Paper elevation={3} variant="outlined">
-      <Header title={title} onCopyButtonClicked={onCopyButtonClicked} />
+      <Header title={title} onCopyButtonClicked={onCopyButtonClick} />
       <Section className={classes.section}>
         <Typography variant="body1" className={classes.description}>
           {description}
