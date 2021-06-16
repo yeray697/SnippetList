@@ -7,7 +7,7 @@ interface SnippetViewEntity {
 const snippetsPath = 'snippets/';
   
 const getSnippets = (onSuccess: (snippets: Snippet[])=> void, onError: (exception: Error) => void) => {
-    return getDatabase().ref('snippets/').get().then(snapshot =>{
+    return getDatabase().ref(snippetsPath).get().then(snapshot =>{
         if (snapshot.exists()) {
             let data: SnippetViewEntity = snapshot.val();
 
