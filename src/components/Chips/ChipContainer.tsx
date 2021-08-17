@@ -23,9 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: theme.spacing(-0.5),
       marginRight: theme.spacing(-0.5),
       marginBottom: theme.spacing(-0.5),
-      '& > *': {
-        margin: theme.spacing(0.5),
-      },
     },
   })
 );

@@ -1,6 +1,6 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { FC } from 'react';
-import ChipContainer from '../../ChipContainer/ChipContainer';
+import ChipContainer from '../../Chips/ChipContainer';
 import MenuFooter, { MenuActions } from './MenuFooter';
 
 interface Props {

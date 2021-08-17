@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, FC, ReactElement } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Zoom } from '@material-ui/core';
 type Props = {
-  tooltip: string;
+  tooltip?: string;
   divRef?: React.MutableRefObject<any>;
   children: ReactElement<any, any>;
   noRef?: boolean;
@@ -30,7 +30,7 @@ const OverflowTooltip: FC<Props> = ({
   placement,
 }) => {
   let newRef: React.MutableRefObject<any>;
-  if (!noRef) newRef = useRef<any>();
+  //ToDo if (!noRef) newRef = useRef<any>();
 
   const [hoverStatus, setHover] = useState(false);
   const compareSize = () => {
@@ -57,16 +57,20 @@ const OverflowTooltip: FC<Props> = ({
   };
   if (!placement) placement = 'right';
   return (
-    <Tooltip
-      title={tooltip}
-      interactive
-      TransitionComponent={Zoom}
-      disableHoverListener={!hoverStatus} // {false} //
-      arrow
-      children={test()}
-      placement={placement}
-      className={className}
-    />
+    <>
+      {tooltip && (
+        <Tooltip
+          title={tooltip}
+          interactive
+          TransitionComponent={Zoom}
+          disableHoverListener={!hoverStatus} // {false} //
+          arrow
+          children={test()}
+          placement={placement}
+          className={className}
+        />
+      )}
+    </>
   );
 };
 

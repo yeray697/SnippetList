@@ -18,7 +18,7 @@ interface Props {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: { marginLeft: 'auto' },
     menuItemPaddings: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
@@ -44,7 +44,7 @@ const MenuFooter: FC<Props> = ({ actions, handleClickMenuItem }) => {
     <div className={classes.root}>
       <Tooltip title="Menu" placement="right">
         <IconButton
-          aria-label="copy"
+          aria-label="menu"
           size="small"
           onClick={handleClickListItem}
         >

@@ -1,4 +1,4 @@
-declare export module '@material-ui/core/styles/createMuiTheme' {
+declare export module '@material-ui/core/styles/createTheme' {
         interface Theme {
           breakpointColumnsObj: {};
           chip: {maxWidth: number, margin: number};

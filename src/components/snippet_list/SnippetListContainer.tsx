@@ -7,6 +7,7 @@ import Snippet from '../../model/snippet';
 import { editSnippet, removeSnippet } from '../../service/snippetService';
 import Search from './Search';
 import SnippetList from './SnippetList';
+import { AnimateSharedLayout } from 'framer-motion';
 
 type ListProps = {
   items: Snippet[] | undefined;
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(8),
     },
     snackbarButton: {
-      color: '#FFFFFF', //ToDo Theme
+      color: theme.palette.common.white,
     },
   })
 );
@@ -71,8 +72,8 @@ const SnippetListContainer = ({ items }: ListProps) => {
     });
   }
 
-  function onEditButtonClicked(id: string) {
-    history.push('/snippet/edit/' + id.toString());
+  function onEditButtonClicked(item: Snippet) {
+    history.push('/snippet/edit/' + item.id);
   }
 
   function onDeleteButtonClicked(id: string) {
@@ -90,32 +91,18 @@ const SnippetListContainer = ({ items }: ListProps) => {
   return (
     <div>
       <Search availableTags={['tag1', 'tag2']} />
-      {pinnedItems && pinnedItems.length > 0 && (
-        <div className={classes.pinnedItems}>
-          <Typography variant="body2" component="h1" className={classes.title}>
-            Liked
-          </Typography>
-          <SnippetList
-            items={pinnedItems}
-            onPinnedItemChange={onPinnedItemChange}
-            onCopyButtonClicked={onCopyButtonClicked}
-            onEditButtonClicked={onEditButtonClicked}
-            onDeleteButtonClicked={onDeleteButtonClicked}
-          />
-        </div>
-      )}
-      <div>
-        {nonPinnedItems && nonPinnedItems.length > 0 && (
-          <div>
+      <AnimateSharedLayout>
+        {pinnedItems && pinnedItems.length > 0 && (
+          <div className={classes.pinnedItems}>
             <Typography
               variant="body2"
               component="h1"
               className={classes.title}
             >
-              Others
+              Liked
             </Typography>
             <SnippetList
-              items={nonPinnedItems}
+              items={pinnedItems}
               onPinnedItemChange={onPinnedItemChange}
               onCopyButtonClicked={onCopyButtonClicked}
               onEditButtonClicked={onEditButtonClicked}
@@ -123,7 +110,27 @@ const SnippetListContainer = ({ items }: ListProps) => {
             />
           </div>
         )}
-      </div>
+        <div>
+          {nonPinnedItems && nonPinnedItems.length > 0 && (
+            <div>
+              <Typography
+                variant="body2"
+                component="h1"
+                className={classes.title}
+              >
+                Others
+              </Typography>
+              <SnippetList
+                items={nonPinnedItems}
+                onPinnedItemChange={onPinnedItemChange}
+                onCopyButtonClicked={onCopyButtonClicked}
+                onEditButtonClicked={onEditButtonClicked}
+                onDeleteButtonClicked={onDeleteButtonClicked}
+              />
+            </div>
+          )}
+        </div>
+      </AnimateSharedLayout>
     </div>
   );
 };

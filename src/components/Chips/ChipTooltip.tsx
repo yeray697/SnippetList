@@ -5,6 +5,10 @@ import OverflowTooltip from '../OverflowTooltip/overflow_tooltip';
 
 interface Props {
   tag: string;
+  className?: string;
+  onClick?: (item: any) => void;
+  onDelete?: (item: any) => void;
+  style?: React.CSSProperties;
 }
 const maxWidthChip = 100;
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,7 +26,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const ChipTooltip: FC<Props> = ({ tag }) => {
+const ChipTooltip: FC<Props> = ({
+  tag,
+  className,
+  onClick,
+  onDelete,
+  style,
+}) => {
   const classes = useStyles();
   const divRef = useRef<any>();
   return (
@@ -35,7 +45,10 @@ const ChipTooltip: FC<Props> = ({ tag }) => {
         }
         size="small"
         variant="outlined"
-        className={classes.chip}
+        className={[classes.chip, className].join(' ')}
+        style={style}
+        onClick={onClick}
+        onDelete={onDelete}
       />
     </OverflowTooltip>
   );
