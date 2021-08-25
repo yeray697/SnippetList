@@ -2,9 +2,10 @@ import { FC, useRef } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import OverflowTooltip from '../OverflowTooltip/overflow_tooltip';
+import Tag from '../../model/tag';
 
 interface Props {
-  tag: string;
+  tag: Tag;
   className?: string;
   onClick?: (item: any) => void;
   onDelete?: (item: any) => void;
@@ -36,11 +37,11 @@ const ChipTooltip: FC<Props> = ({
   const classes = useStyles();
   const divRef = useRef<any>();
   return (
-    <OverflowTooltip tooltip={tag} divRef={divRef}>
+    <OverflowTooltip tooltip={tag.text} divRef={divRef}>
       <Chip
         label={
           <div className={classes.chipText} ref={divRef}>
-            {tag}
+            {tag.text}
           </div>
         }
         size="small"

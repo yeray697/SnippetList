@@ -9,12 +9,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Header from './Header';
 import Footer from './Footer';
 import { MenuActions } from './MenuFooter';
+import Tag from '../../../model/tag';
 
 type Props = {
   id: string;
   title: string;
   description: string;
-  tags: string[];
+  tags: Tag[];
   isPinned: boolean;
   onPinnedItemChange(id: string, isPinned: boolean): void;
   onCopyButtonClicked(script: string): void;

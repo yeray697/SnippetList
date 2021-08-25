@@ -1,10 +1,11 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { FC } from 'react';
+import Tag from '../../../model/tag';
 import ChipContainer from '../../Chips/ChipContainer';
 import MenuFooter, { MenuActions } from './MenuFooter';
 
 interface Props {
-  tags: string[];
+  tags: Tag[];
   actions: MenuActions[];
   className?: string;
   handleClickMenuItem(actionId: string): void;

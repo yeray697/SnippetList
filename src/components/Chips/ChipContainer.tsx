@@ -8,9 +8,10 @@ import React, {
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import ChipTooltip from './ChipTooltip';
 import { useTheme } from '@material-ui/styles';
+import Tag from '../../model/tag';
 
 interface Props {
-  tagList: string[];
+  tagList: Tag[];
   className?: string;
 }
 const useStyles = makeStyles((theme: Theme) =>
@@ -70,7 +71,7 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
       let hasFontChanged = fontChanged(currentFont);
       if (hasFontChanged) {
         for (let tag of tagList) {
-          let width = getTextWidth(theme, tag, divRootRef, contextCanvan);
+          let width = getTextWidth(theme, tag.text, divRootRef, contextCanvan);
           width = Math.min(width, theme.chip.maxWidth);
           tagWidths.push(width);
         }
@@ -97,7 +98,7 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
     };
     const filterTags = () => {
       let containerWidth = getRefWidth(divRootRef);
-      let tags: string[] = [];
+      let tags: Tag[] = [];
       let remainingWidth = containerWidth;
       let i = 0;
 
@@ -121,7 +122,10 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
           remainingWidth += tagWidths[tags.length - 1];
           tags.splice(-1, 1);
         }
-        tags.push('+' + (tagList.length - tags.length));
+        tags.push({
+          id: '-1',
+          text: (tagList.length - tags.length).toString(),
+        });
       }
       return tags;
     };
@@ -137,7 +141,7 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
     <div ref={divRootRef} className={[classes.root, className].join(' ')}>
       {filteredTagsStatus &&
         filteredTagsStatus.map((tag, i) => {
-          return <ChipTooltip tag={tag} key={tag} />;
+          return <ChipTooltip tag={tag} key={i} />;
         })}
     </div>
   );
