@@ -3,7 +3,7 @@
 ## Description
 
 This is a personal project to learn React, [Material UI 4](https://v4.mui.com) and cool animations with [Framer Motion](https://www.framer.com/motion/)
-![Home view of the app](img/home.png)
+![Home view of the app](img/home.PNG)
 
 ## To Do
 
