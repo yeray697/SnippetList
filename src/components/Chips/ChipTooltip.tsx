@@ -11,17 +11,19 @@ interface Props {
   onDelete?: (item: any) => void;
   style?: React.CSSProperties;
 }
-const maxWidthChip = 100;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     chip: {
-      maxWidth: theme.chip.maxWidth,
+      marginRight: theme.chip.margin,
+      '&:last-child': {
+        marginRight: 0,
+      },
     },
     chipText: {
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
-      maxWidth: maxWidthChip,
+      maxWidth: theme.chip.maxWidth,
       fontWeight: 'lighter',
     },
   })
@@ -42,13 +44,16 @@ const ChipTooltip: FC<Props> = ({
         <OverflowTooltip tooltip={tag.text} divRef={divRef}>
           <Chip
             label={
-              <div className={classes.chipText} ref={divRef}>
+              <div
+                className={[classes.chipText, className].join(' ')}
+                ref={divRef}
+              >
                 {tag.text}
               </div>
             }
             size="small"
             variant="outlined"
-            className={[classes.chip, className].join(' ')}
+            className={classes.chip}
             style={style}
             onClick={onClick}
             onDelete={onDelete}

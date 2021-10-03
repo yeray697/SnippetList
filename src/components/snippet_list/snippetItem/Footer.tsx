@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       paddingBottom: theme.spacing(2),
       justifyContent: 'space-between',
+      alignItems: 'center',
     },
     chipContainer: {
       marginRight: theme.spacing(1),

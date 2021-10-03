@@ -14,8 +14,10 @@ const muiTheme = createMuiTheme({
     },
   },
   chip: {
-    maxWidth: 100,
-    margin: 28,
+    maxWidth: 46,
+    margin: 5,
+    borderWidth: 1.25,
+    textPaddingSides: 8, //ToDo theme.spacing(1)
   },
   breakpointColumnsObj: {
     default: 1,
@@ -26,16 +28,16 @@ const muiTheme = createMuiTheme({
   },
 });
 
-//using the variable in order to access the spacing function
-// muiTheme.overrides = {
-//   MuiCardContent: {
-//     root: {
-//       //Setting same padding as all the other elements
-//       '&:last-child': {
-//         paddingBottom: muiTheme.spacing(2),
-//       },
-//     },
-//   },
-// };
+muiTheme.overrides = {
+  MuiChip: {
+    labelSmall: {
+      paddingLeft: muiTheme.chip.textPaddingSides,
+      paddingRight: muiTheme.chip.textPaddingSides,
+    },
+    outlined: {
+      borderWidth: muiTheme.chip.borderWidth,
+    },
+  },
+};
 
 export default muiTheme;
