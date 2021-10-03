@@ -94,43 +94,45 @@ const SnippetListContainer = ({ items }: ListProps) => {
     <div>
       <Search availableTags={['tag1', 'tag2']} />
       <AnimateSharedLayout>
-        {pinnedItems && pinnedItems.length > 0 && (
-          <div className={classes.pinnedItems}>
+        <div
+          className={classes.pinnedItems}
+          style={{
+            display: pinnedItems && pinnedItems.length > 0 ? 'block' : 'none',
+          }}
+        >
+          <Typography variant="body2" component="h1" className={classes.title}>
+            Liked
+          </Typography>
+          <SnippetList
+            items={pinnedItems!!}
+            onPinnedItemChange={onPinnedItemChange}
+            onCopyButtonClicked={onCopyButtonClicked}
+            onEditButtonClicked={onEditButtonClicked}
+            onDeleteButtonClicked={onDeleteButtonClicked}
+          />
+        </div>
+        <div>
+          <div
+            style={{
+              display:
+                nonPinnedItems && nonPinnedItems.length > 0 ? 'block' : 'none',
+            }}
+          >
             <Typography
               variant="body2"
               component="h1"
               className={classes.title}
             >
-              Liked
+              Others
             </Typography>
             <SnippetList
-              items={pinnedItems}
+              items={nonPinnedItems!!}
               onPinnedItemChange={onPinnedItemChange}
               onCopyButtonClicked={onCopyButtonClicked}
               onEditButtonClicked={onEditButtonClicked}
               onDeleteButtonClicked={onDeleteButtonClicked}
             />
           </div>
-        )}
-        <div>
-          {nonPinnedItems && nonPinnedItems.length > 0 && (
-            <div>
-              <Typography
-                variant="body2"
-                component="h1"
-                className={classes.title}
-              >
-                Others
-              </Typography>
-              <SnippetList
-                items={nonPinnedItems}
-                onPinnedItemChange={onPinnedItemChange}
-                onCopyButtonClicked={onCopyButtonClicked}
-                onEditButtonClicked={onEditButtonClicked}
-                onDeleteButtonClicked={onDeleteButtonClicked}
-              />
-            </div>
-          )}
         </div>
       </AnimateSharedLayout>
     </div>
