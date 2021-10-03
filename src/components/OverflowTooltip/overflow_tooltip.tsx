@@ -1,11 +1,12 @@
-import { useRef, useState, useEffect, FC, ReactElement } from 'react';
+import { useState, useEffect, FC, ReactElement } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Zoom } from '@material-ui/core';
+import useRect from '../../hooks/useRect';
+
 type Props = {
   tooltip?: string;
-  divRef?: React.MutableRefObject<any>;
+  divRef: React.MutableRefObject<any>;
   children: ReactElement<any, any>;
-  noRef?: boolean;
   className?: string;
   placement?:
     | 'bottom-end'
@@ -24,37 +25,17 @@ type Props = {
 const OverflowTooltip: FC<Props> = ({
   tooltip,
   divRef,
-  noRef,
   className,
   children,
   placement,
 }) => {
-  let newRef: React.MutableRefObject<any>;
-  //ToDo if (!noRef) newRef = useRef<any>();
-
   const [hoverStatus, setHover] = useState(false);
-  const compareSize = () => {
-    const compare =
-      !hoverStatus &&
-      (divRef ?? newRef)?.current?.scrollWidth >
-        (divRef ?? newRef)?.current?.clientWidth;
-    setHover(compare);
-  };
+  const rect = useRect(divRef);
 
   useEffect(() => {
-    compareSize();
-    window.addEventListener('resize', compareSize);
-  }, []);
-
-  useEffect(
-    () => () => {
-      window.removeEventListener('resize', compareSize);
-    },
-    []
-  );
-  const test = () => {
-    return noRef ? <div ref={newRef}> {children} </div> : children;
-  };
+    const compare = rect.scrollWidth > rect.clientWidth;
+    setHover(compare);
+  }, [rect]);
   if (!placement) placement = 'right';
   return (
     <>
@@ -63,9 +44,9 @@ const OverflowTooltip: FC<Props> = ({
           title={tooltip}
           interactive
           TransitionComponent={Zoom}
-          disableHoverListener={!hoverStatus} // {false} //
+          disableHoverListener={!hoverStatus}
           arrow
-          children={test()}
+          children={children}
           placement={placement}
           className={className}
         />

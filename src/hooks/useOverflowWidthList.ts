@@ -35,13 +35,13 @@ const useOverflowWidthList = <T extends Item> (ref: MutableRefObject<HTMLElement
     const rect = useRect(ref);
     const [filteredList, setFilteredList] = useState(list)
     useEffect(() => {
-      if (!ref?.current || rect?.width === 0)
+      if (!ref?.current || rect.base.width === 0)
         return;
       const additionalWidth = (theme.chip.borderWidth + theme.chip.textPaddingSides) * 2 + theme.chip.margin;
       let newList: T[]= [] 
       let width:number = 0;
 
-      const initialWidth = rect.width;
+      const initialWidth = rect.base.width;
       let remainingWidth = initialWidth;
       let listAux = list.sort(i => i.text.length);
       const listLength = listAux.length;

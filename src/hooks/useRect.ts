@@ -1,23 +1,37 @@
 //Source: https://gist.github.com/morajabi/523d7a642d8c0a2f71fcfa0d8b3d2846
 import { useLayoutEffect, useCallback, useState, MutableRefObject } from 'react'
 
-const getRect = (element: HTMLElement | null) => {
+interface Rect {
+  base: {
+    bottom: number,
+    height: number,
+    left: number,
+    right: number,
+    top: number,
+    width: number
+  },
+  scrollWidth: number,
+  scrollHeight: number,
+  clientWidth: number,
+  clientHeight: number
+}
+
+const getRect = (element: HTMLElement | null) : Rect=> {
   if (!element) {
     return {
-      bottom: 0,
-      height: 0,
-      left: 0,
-      right: 0,
-      top: 0,
-      width: 0,
-    } as DOMRect
+      base: {bottom: 0, height: 0, left: 0, right: 0, top: 0, width: 0,}, scrollWidth: 0, scrollHeight: 0, clientWidth: 0, clientHeight: 0
+    }
   }
+  const aux = element.getBoundingClientRect();
 
-  return element.getBoundingClientRect()
+
+  return {base: {bottom: aux.bottom, height: aux.height, left: aux.left,right: aux.right,top: aux.top,width: aux.width,}
+    ,scrollWidth: element.scrollWidth, scrollHeight: element.scrollHeight, clientWidth: element.clientWidth, clientHeight: element.clientHeight
+  }
 }
 
 const useRect = (ref: MutableRefObject<HTMLElement>) => {
-  const [rect, setRect] = useState<DOMRect>(getRect(ref ? ref.current : null))
+  const [rect, setRect] = useState(getRect(ref ? ref.current : null))
 
   const handleResize = useCallback(() => {
     if (!ref.current) return
