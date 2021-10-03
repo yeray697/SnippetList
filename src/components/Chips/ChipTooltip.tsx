@@ -37,21 +37,25 @@ const ChipTooltip: FC<Props> = ({
   const classes = useStyles();
   const divRef = useRef<any>();
   return (
-    <OverflowTooltip tooltip={tag.text} divRef={divRef}>
-      <Chip
-        label={
-          <div className={classes.chipText} ref={divRef}>
-            {tag.text}
-          </div>
-        }
-        size="small"
-        variant="outlined"
-        className={[classes.chip, className].join(' ')}
-        style={style}
-        onClick={onClick}
-        onDelete={onDelete}
-      />
-    </OverflowTooltip>
+    <>
+      {tag && (
+        <OverflowTooltip tooltip={tag.text} divRef={divRef}>
+          <Chip
+            label={
+              <div className={classes.chipText} ref={divRef}>
+                {tag.text}
+              </div>
+            }
+            size="small"
+            variant="outlined"
+            className={[classes.chip, className].join(' ')}
+            style={style}
+            onClick={onClick}
+            onDelete={onDelete}
+          />
+        </OverflowTooltip>
+      )}
+    </>
   );
 };
 

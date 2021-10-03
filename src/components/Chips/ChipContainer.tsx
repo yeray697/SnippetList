@@ -67,13 +67,21 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
   let initialFont = '';
   useEffect(() => {
     const compareSize = () => {
+      if (!divRootRef.current?.children[0]) return;
       let currentFont = getFontFromRef(divRootRef);
       let hasFontChanged = fontChanged(currentFont);
       if (hasFontChanged) {
-        for (let tag of tagList) {
-          let width = getTextWidth(theme, tag.text, divRootRef, contextCanvan);
-          width = Math.min(width, theme.chip.maxWidth);
-          tagWidths.push(width);
+        for (let tag of filteredTagsStatus) {
+          if (tag) {
+            let width = getTextWidth(
+              theme,
+              tag.text,
+              divRootRef,
+              contextCanvan
+            );
+            width = Math.min(width, theme.chip.maxWidth);
+            tagWidths.push(width);
+          }
         }
         initialFont = currentFont;
         hasFontChanged = true;
@@ -102,15 +110,15 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
       let remainingWidth = containerWidth;
       let i = 0;
 
-      while (remainingWidth > 0 && i < tagList.length) {
+      while (remainingWidth > 0 && i < filteredTagsStatus.length) {
         if (remainingWidth - tagWidths[i] >= 0) {
-          tags.push(tagList[i]);
+          tags.push(filteredTagsStatus[i]);
           remainingWidth -= tagWidths[i];
         }
         i++;
       }
 
-      if (tags.length < tagList.length) {
+      if (tags.length < filteredTagsStatus.length) {
         let auxTextWidth = getTextWidth(
           theme,
           '+00',
@@ -124,7 +132,7 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
         }
         tags.push({
           id: '-1',
-          text: (tagList.length - tags.length).toString(),
+          text: (filteredTagsStatus.length - tags.length).toString(),
         });
       }
       return tags;
@@ -135,7 +143,7 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
     return () => window.removeEventListener('resize', compareSize);
   }, [initialWidth, initialFont]);
 
-  if (!tagList || tagList.length == 0) return null;
+  if (!filteredTagsStatus || filteredTagsStatus.length === 0) return null;
 
   return (
     <div ref={divRootRef} className={[classes.root, className].join(' ')}>

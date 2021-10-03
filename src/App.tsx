@@ -5,6 +5,7 @@ import Home from './pages/home/Home';
 import { Container } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import Login from './pages/login/Login';
+import Playground from './pages/playground/Playground';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/Login" component={Login} />
+            <Route exact path="/Playground" component={Playground} />
           </Switch>
         </BrowserRouter>
       </Container>
