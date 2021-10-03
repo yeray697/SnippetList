@@ -4,6 +4,8 @@ import { SnackbarKey, useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Snippet from '../../model/snippet';
+//ToDo
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { editSnippet, removeSnippet } from '../../service/snippetService';
 import Search from './Search';
 import SnippetList from './SnippetList';

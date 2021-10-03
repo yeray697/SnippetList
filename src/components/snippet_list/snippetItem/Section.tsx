@@ -1,4 +1,4 @@
-import { Divider, Theme, Typography } from '@material-ui/core';
+import { Theme, Typography } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
 import { FC } from 'react';
 

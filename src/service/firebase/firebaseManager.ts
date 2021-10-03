@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import User from '../../model/user';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAFLr00SsD85RQ92MpqQgqwj7xzIhroZ8I",

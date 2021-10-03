@@ -8,7 +8,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import User from '../../model/user';
 
 const Home = () => {
-  const [userAuth, loading, error] = useAuthState(auth);
+  const [userAuth, loading] = useAuthState(auth);
   const history = useHistory();
   const [user, setUser] = useState<User | undefined>(undefined);
 
@@ -17,7 +17,6 @@ const Home = () => {
     if (!userAuth) return history.replace('/Login');
 
     function onGetUserSuccessful(user: User) {
-      console.log(user);
       setUser(user);
     }
     function onGetUserError(exception: Error) {

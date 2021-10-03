@@ -1,6 +1,6 @@
 import Snippet from '../model/snippet';
 import { auth, db } from './firebase/firebaseManager';
-import { mapFromDto as mapUserFromDto, mapFromModel as mapUserFromModel, mapFromSnapshot as mapUserFromSnapshot } from '../mapper/userMapper';
+import { mapFromDto as mapUserFromDto, mapFromSnapshot as mapUserFromSnapshot } from '../mapper/userMapper';
 import { mapFromModel as mapSnippetFromModel } from '../mapper/snippetMapper';
 import User from '../model/user';
 import UserDTO from '../model/DTO/userDto';
@@ -8,10 +8,6 @@ import firebase from 'firebase/app';
 
 const usersPath = 'users/';
 const snippetsPath = 'snippets/';
-
-const getUserId = () => {
-    return '-MgRTgZAHM0tJ4mixQH0';
-}
 
 const getUser = (user: firebase.User, onSuccess: (user: User)=> void, onError: (exception: Error) => void) => {
     db

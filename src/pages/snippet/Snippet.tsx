@@ -2,7 +2,7 @@ import { TextField } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
 
 const SnippetPage = ({ match }: RouteComponentProps<{ id: string }>) => {
-  let editMode = match.path.startsWith('/snippet/edit/'); //ToDo constant
+  //ToDo let editMode = match.path.startsWith('/snippet/edit/'); //ToDo constant
 
   return (
     <form className={''} noValidate autoComplete="off">
