@@ -2,12 +2,9 @@ import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './parts/header/Header';
 import Home from './pages/home/Home';
-import SnippetPage from './pages/snippet/Snippet';
 import { Container } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
-import { initFirebase } from './service/firebase/firebaseManager';
-
-initFirebase();
+import Login from './pages/login/Login';
 
 function App() {
   return (
@@ -15,15 +12,9 @@ function App() {
       <Header />
       <Container fixed>
         <BrowserRouter>
-          <Home />
           <Switch>
-            <Route
-              exact
-              path="/snippet/edit/:id(\d+)"
-              component={SnippetPage}
-            />
-            <Route exact path="/snippet/add" component={SnippetPage} />
-            <Route exact path="/snippet/:id(\d+)" component={SnippetPage} />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/Login" component={Login} />
           </Switch>
         </BrowserRouter>
       </Container>

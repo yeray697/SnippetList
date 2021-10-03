@@ -1,62 +1,53 @@
 import Snippet from '../model/snippet';
-import { getDatabase } from './firebase/firebaseManager';
+import { auth, db } from './firebase/firebaseManager';
+import { mapFromDto as mapUserFromDto, mapFromModel as mapUserFromModel, mapFromSnapshot as mapUserFromSnapshot } from '../mapper/userMapper';
+import { mapFromModel as mapSnippetFromModel } from '../mapper/snippetMapper';
+import User from '../model/user';
+import UserDTO from '../model/DTO/userDto';
+import firebase from 'firebase/app';
 
-interface SnippetViewEntity {
-    [key: string]: Snippet
-}
+const usersPath = 'users/';
 const snippetsPath = 'snippets/';
+
+const getUserId = () => {
+    return '-MgRTgZAHM0tJ4mixQH0';
+}
+
+const getUser = (user: firebase.User, onSuccess: (user: User)=> void, onError: (exception: Error) => void) => {
+    db
+        .ref(usersPath+user.uid)
+        .get()
+        .then(snapshot =>{
+        if(!snapshot.exists()) {
+            addDefaultUser(user, onSuccess, onError)
+        } else {
+            onSuccess(mapUserFromSnapshot(snapshot));
+        }
+        })
+        .catch(exception => {onError(exception)});
+}
   
-const getSnippets = (onSuccess: (snippets: Snippet[])=> void, onError: (exception: Error) => void) => {
-    return getDatabase().ref(snippetsPath).get().then(snapshot =>{
-        if (snapshot.exists()) {
-            let data: SnippetViewEntity = snapshot.val();
-
-            let snippets: Snippet[] = Object.entries(data).map(([key, value]) => {
-                value.id = key;
-                return value;
-            });
-            onSuccess(snippets);
-          } else onError(new Error("Error"));
-    }).catch(exception => {
-        onError(exception);
-    });
-}
-
-//ToDo implement the real time database
-// const listenSnippets = () => {
-//     getDatabase()
-//         .ref(snippetsPath)
-//         .on('value', (snapshot) => {
-//             const data = snapshot.val();
-
-//         })
-// }
-
-const addSnippet = (snippet: Snippet) => {
-    let id = getDatabase().ref(snippetsPath).push().key;
-    if (id) {
-        snippet.id = id;
-        getDatabase().ref(snippetsPath + snippet.id).set({
-            title: snippet.title,
-            description: snippet.description,
-            tags: snippet.tags,
-            pinned: snippet.pinned
-        });
-    }
-}
-
-const addAll = (snippets: Snippet[]) => {
-    snippets.forEach(element => {
-        addSnippet(element);
-    });
+const addDefaultUser = (user: firebase.User, onSuccess: (user: User)=> void, onError: (exception: Error) => void) => {
+    let newUser: UserDTO = {
+            name: user.displayName?? "Anonymous"
+            ,snippets: {}
+            ,tags: {}
+        } 
+    db.ref(usersPath + user.uid)
+    .set(newUser)
+    onSuccess(mapUserFromDto(user.uid, newUser));
 }
 
 const editSnippet = (snippet: Snippet) => {
-    getDatabase().ref(snippetsPath + snippet.id).update(snippet)
+    if (auth.currentUser) {
+        db.ref(usersPath + auth.currentUser?.uid + "/" + snippetsPath + snippet.id).update(mapSnippetFromModel(snippet))
+    }
 }
 
 const removeSnippet = (id: string) => {
-    getDatabase().ref(snippetsPath + id).remove();
+    if (auth.currentUser) {
+        db.ref(usersPath + auth.currentUser?.uid + "/" + id).remove();
+    }
 }
 
-export {getSnippets, addSnippet, editSnippet, removeSnippet, addAll}
+export {getUser, editSnippet, removeSnippet}

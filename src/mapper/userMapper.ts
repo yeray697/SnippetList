@@ -5,8 +5,8 @@ import { mapFromDto as mapTagFromDto } from "./tagMapper";
 import { mapFromDto as mapSnippetFromDto } from "./snippetMapper";
 
 function mapFromDto(id: string, dto: UserDTO) { //}: User[] {
-    var parsedTags = Object.entries(dto.tags).map(([key, value]) => (mapTagFromDto(key,value)));
-    var parsedSnippets = Object.entries(dto.snippets).map(([key, value]) => mapSnippetFromDto(key, value, parsedTags));
+    var parsedTags = dto?.tags ? Object.entries(dto.tags).map(([key, value]) => (mapTagFromDto(key,value))) : [];
+    var parsedSnippets = dto?.snippets ? Object.entries(dto.snippets).map(([key, value]) => mapSnippetFromDto(key, value, parsedTags)) : [];
     return {id: id, snippets: parsedSnippets, tags: parsedTags} as User;
 }
 
