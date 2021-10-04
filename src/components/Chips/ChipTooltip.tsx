@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textOverflow: 'ellipsis',
       maxWidth: theme.chip.maxWidth,
       fontWeight: 'lighter',
+      fontSize: 11,
     },
   })
 );
