@@ -48,9 +48,9 @@ const addDefaultUser = (
   onSuccess(mapUserFromDto(user.uid, newUser));
 };
 
-const mergeAccounts = (authUser: firebase.User, anonymousUserId: string) => {
+const mergeAccounts = (newUser: firebase.User, oldUser: firebase.User) => {
   let anonymousUser: User;
-  getUserById(anonymousUserId)
+  getUserById(oldUser.uid)
     .then(snapshot => {
       if (snapshot.exists()) {
         anonymousUser = mapUserFromSnapshot(snapshot);
@@ -58,21 +58,27 @@ const mergeAccounts = (authUser: firebase.User, anonymousUserId: string) => {
     })
     .then(() => {
       if (anonymousUser.snippets && anonymousUser.snippets.length) {
-        getUserById(authUser.uid).then(snapshot => {
+        getUserById(newUser.uid).then(snapshot => {
           if (snapshot.exists()) {
-            const newUser = mapUserFromSnapshot(snapshot);
-            console.log(anonymousUser);
-            console.log(newUser);
-            newUser.snippets = [...newUser.snippets, ...anonymousUser.snippets];
-            newUser.tags = [...newUser.tags, ...anonymousUser.tags];
-            console.log(newUser);
-            const mappedUser = mapUserFromModel(newUser);
-            console.log(mappedUser);
-            db.ref(usersPath + authUser.uid).update(mappedUser);
+            db.ref(usersPath + newUser.uid).update(
+              mergeUsersData(mapUserFromSnapshot(snapshot), anonymousUser)
+            );
           }
         });
       }
+      removeUserData(oldUser);
     });
+};
+
+const mergeUsersData = (newUser: User, oldUser: User): UserDTO => {
+  newUser.snippets = [...newUser.snippets, ...oldUser.snippets];
+  newUser.tags = [...newUser.tags, ...oldUser.tags];
+  return mapUserFromModel(newUser);
+};
+
+const removeUserData = (user: firebase.User) => {
+  db.ref(usersPath + user.uid).remove();
+  user.delete();
 };
 
 const editSnippet = (snippet: Snippet) => {

@@ -42,10 +42,7 @@ const loginWithGoogle = async (onError: (exception: Error) => void) => {
       })
       .then(result => {
         if (result?.user && anonymousUser.uid !== result.user.uid) {
-          return anonymousUser.delete().then(() => {
-            mergeAccounts(result.user!!, anonymousUser.uid);
-            return result;
-          });
+          mergeAccounts(result.user!!, anonymousUser);
         }
         return result;
       });
