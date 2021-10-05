@@ -1,8 +1,7 @@
 import Snippet from '../model/snippet';
 import { auth, db } from './firebase/firebaseManager';
 import {
-  mapFromDto as mapUserFromDto,
-  mapFromSnapshot as mapUserFromSnapshot,
+  mapFromDtoWithId as mapUserFromDto,
   mapFromModel as mapUserFromModel,
 } from '../mapper/userMapper';
 import { mapFromModel as mapSnippetFromModel } from '../mapper/snippetMapper';
@@ -23,7 +22,7 @@ const getUser = (
       if (!snapshot.exists()) {
         addDefaultUser(user, onSuccess);
       } else {
-        onSuccess(mapUserFromSnapshot(snapshot));
+        onSuccess(mapUserFromDto(snapshot.key!!, snapshot.val()));
       }
     })
     .catch(exception => {
@@ -53,7 +52,7 @@ const mergeAccounts = (newUser: firebase.User, oldUser: firebase.User) => {
   getUserById(oldUser.uid)
     .then(snapshot => {
       if (snapshot.exists()) {
-        anonymousUser = mapUserFromSnapshot(snapshot);
+        anonymousUser = mapUserFromDto(snapshot.key!!, snapshot.val());
       }
     })
     .then(() => {
@@ -61,7 +60,10 @@ const mergeAccounts = (newUser: firebase.User, oldUser: firebase.User) => {
         getUserById(newUser.uid).then(snapshot => {
           if (snapshot.exists()) {
             db.ref(usersPath + newUser.uid).update(
-              mergeUsersData(mapUserFromSnapshot(snapshot), anonymousUser)
+              mergeUsersData(
+                mapUserFromDto(snapshot.key!!, snapshot.val()),
+                anonymousUser
+              )
             );
           }
         });

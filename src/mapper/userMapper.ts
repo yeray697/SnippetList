@@ -1,4 +1,3 @@
-import firebase from 'firebase/app';
 import UserDTO from '../model/DTO/userDto';
 import User from '../model/user';
 import {
@@ -10,7 +9,7 @@ import {
   mapFromModel as mapSnippetFromModel,
 } from './snippetMapper';
 
-function mapFromDto(id: string, dto: UserDTO): User {
+function mapFromDto(dto: UserDTO): User {
   let parsedTags = dto?.tags
     ? Object.entries(dto.tags).map(([key, value]) => mapTagFromDto(value))
     : [];
@@ -21,15 +20,14 @@ function mapFromDto(id: string, dto: UserDTO): User {
     : [];
 
   return {
-    id: id,
     name: dto.name,
     snippets: parsedSnippets,
     tags: parsedTags,
   } as User;
 }
 
-function mapFromSnapshot(snapshot: firebase.database.DataSnapshot): User {
-  return mapFromDto(snapshot.key!!, snapshot.val());
+function mapFromDtoWithId(id: string, user: UserDTO): User {
+  return { ...mapFromDto(user), ...{ id: id } };
 }
 
 function mapFromModel(model: User): UserDTO {
@@ -42,4 +40,4 @@ function mapFromModel(model: User): UserDTO {
   } as UserDTO;
 }
 
-export { mapFromDto, mapFromSnapshot, mapFromModel };
+export { mapFromDto, mapFromDtoWithId, mapFromModel };

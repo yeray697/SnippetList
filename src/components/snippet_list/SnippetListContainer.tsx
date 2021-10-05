@@ -1,7 +1,7 @@
 import { Button, Theme, Typography } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
 import { SnackbarKey, useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import Snippet from '../../model/snippet';
 //ToDo
@@ -48,14 +48,22 @@ const SnippetListContainer = ({ items }: ListProps) => {
     items?.filter(i => !i.pinned)
   );
 
+  const refreshLists = useCallback(() => {
+    setPinnedItems(items?.filter(i => i.pinned));
+    setNonPinnedItems(items?.filter(i => !i.pinned));
+  }, [items]);
+
+  useEffect(() => {
+    refreshLists();
+  }, [items, refreshLists]);
+
   function onPinnedItemChange(id: string, isPinned: boolean) {
     let aux = items?.find(i => i.id === id);
     if (aux) {
       aux.pinned = isPinned;
       editSnippet(aux);
     }
-    setPinnedItems(items?.filter(i => i.pinned));
-    setNonPinnedItems(items?.filter(i => !i.pinned));
+    refreshLists();
   }
 
   function onCopyButtonClicked(content: string) {

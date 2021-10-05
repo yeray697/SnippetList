@@ -1,38 +1,36 @@
 import SnippetListContainer from '../../components/snippet_list/SnippetListContainer';
-import { getUser } from '../../service/snippetService';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import SnippetPage from '../snippet/Snippet';
-import { auth, loginAnonymous } from '../../service/firebase/firebaseManager';
+import {
+  auth,
+  db,
+  loginAnonymous,
+} from '../../service/firebase/firebaseManager';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useObjectVal } from 'react-firebase-hooks/database';
 import User from '../../model/user';
+import { mapFromDto as mapUserFromDto } from '../../mapper/userMapper';
 
 const Home = () => {
-  const [userAuth, loading] = useAuthState(auth);
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [userAuth, loginLoading] = useAuthState(auth);
 
   useEffect(() => {
-    if (loading || (userAuth && !userAuth.isAnonymous)) return;
+    if (loginLoading || (userAuth && !userAuth.isAnonymous)) return;
     loginAnonymous(onErrorLogin);
-  }, [loading, userAuth]);
+  }, [loginLoading, userAuth]);
+
+  const [user, userDataLoading] = useObjectVal<User>(
+    db.ref('users/' + auth?.currentUser?.uid),
+    {
+      keyField: 'id',
+      transform: mapUserFromDto,
+    }
+  );
 
   function onErrorLogin(exception: Error) {
     console.log(exception);
   }
-
-  useEffect(() => {
-    if (loading) return;
-    if (!userAuth) return;
-
-    function onGetUserSuccessful(user: User) {
-      setUser(user);
-    }
-    function onGetUserError(exception: Error) {
-      console.log(exception);
-    }
-
-    getUser(userAuth, onGetUserSuccessful, onGetUserError);
-  }, [userAuth, loading]);
 
   return (
     <>
@@ -43,7 +41,9 @@ const Home = () => {
           <Route exact path="/snippet/:id(\d+)" component={SnippetPage} />
         </Switch>
       </BrowserRouter>
-      {user && user.snippets && <SnippetListContainer items={user.snippets} />}
+      {!userDataLoading && user && user.snippets && (
+        <SnippetListContainer items={user.snippets} />
+      )}
     </>
   );
 };
