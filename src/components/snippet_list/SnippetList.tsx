@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 type ListProps = {
   items: Snippet[];
-  onPinnedItemChange(id: string, isPinned: boolean): void;
+  onPinnedItemChange(id: string): void;
   onCopyButtonClicked(script: string): void;
   onEditButtonClicked(selectedItem: Snippet): void;
   onDeleteButtonClicked(id: string): void;

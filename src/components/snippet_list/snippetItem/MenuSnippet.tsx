@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const MenuFooter: FC<Props> = ({ actions, handleClickMenuItem }) => {
+const MenuSnippet: FC<Props> = ({ actions, handleClickMenuItem }) => {
   const classes = useStyles();
   function handleMenuItemClick(actionId: string) {
     setAnchorEl(null);
@@ -41,7 +41,7 @@ const MenuFooter: FC<Props> = ({ actions, handleClickMenuItem }) => {
     setAnchorEl(null);
   };
   return (
-    <div className={classes.root}>
+    <section className={classes.root}>
       <Tooltip title="Menu" placement="right">
         <IconButton
           aria-label="menu"
@@ -79,7 +79,7 @@ const MenuFooter: FC<Props> = ({ actions, handleClickMenuItem }) => {
           );
         })}
       </Menu>
-    </div>
+    </section>
   );
 };
 
@@ -88,4 +88,4 @@ export interface MenuActions {
   name: string;
   icon: JSX.Element;
 }
-export default MenuFooter;
+export default MenuSnippet;

@@ -56,10 +56,10 @@ const SnippetListContainer = () => {
     }
   );
 
-  function onPinnedItemChange(id: string, isPinned: boolean) {
+  function onPinnedItemChange(id: string) {
     let aux = getSnippets()?.find(i => i.id === id);
     if (aux) {
-      aux.pinned = isPinned;
+      aux.pinned = !aux.pinned;
       editSnippet(aux);
     }
   }

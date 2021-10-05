@@ -14,11 +14,8 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       flexWrap: 'wrap',
-      maxHeight: theme.spacing(4),
+      maxHeight: theme.spacing(3),
       overflow: 'hidden',
-      marginLeft: theme.spacing(-0.5),
-      marginRight: theme.spacing(-0.5),
-      marginBottom: theme.spacing(-0.5),
     },
   })
 );
