@@ -40,7 +40,7 @@ const SnippetList = ({
   const theme = useTheme<Theme>();
 
   const onEditButtonClick = (id: string) => {
-    var item = items.find(i => i.id === id);
+    let item = items.find(i => i.id === id);
     if (item) onEditButtonClicked(item);
   };
 

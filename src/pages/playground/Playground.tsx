@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 
 function Playground() {
   const history = useHistory();
-  var env = process.env.NODE_ENV || 'development';
+  let env = process.env.NODE_ENV || 'development';
   if (env === 'production') {
     history.push('/');
   }

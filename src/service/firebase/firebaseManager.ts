@@ -35,7 +35,7 @@ const loginWithGoogle = async (onError: (exception: Error) => void) => {
       .linkWithPopup(googleProvider)
       .then(function (user) {})
       .catch(function (error) {
-        var errorCode = error.code;
+        let errorCode = error.code;
         if (errorCode === 'auth/credential-already-in-use') {
           return firebase.auth().signInWithCredential(error.credential);
         }

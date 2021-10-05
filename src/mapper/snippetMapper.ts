@@ -3,7 +3,7 @@ import Tag from '../model/tag';
 import Snippet from '../model/snippet';
 
 function mapFromDto(snippet: SnippetDTO, tagList: Tag[]): Snippet {
-  var tags: Tag[] = parseTags(snippet.tags, tagList);
+  let tags: Tag[] = parseTags(snippet.tags, tagList);
   return {
     id: snippet.id,
     title: snippet.title,

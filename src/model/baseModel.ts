@@ -1,5 +1,5 @@
 interface BaseModel {
-    id: string
+  id: string;
 }
 
 export default BaseModel;
