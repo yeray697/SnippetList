@@ -1,11 +1,11 @@
-import Tag from "./tag";
+import Tag from './tag';
+import BaseModel from './baseModel';
 
-interface Snippet {
-  id: string
-  title: string
-  description: string
-  tags: Tag[]
-  pinned: boolean
+interface Snippet extends BaseModel {
+  title: string;
+  description: string;
+  tags: Tag[];
+  pinned: boolean;
 }
 
-export default Snippet
+export default Snippet;

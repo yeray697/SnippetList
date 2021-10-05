@@ -3,22 +3,23 @@ import UserDTO from '../model/DTO/userDto';
 import User from '../model/user';
 import {
   mapFromDto as mapTagFromDto,
-  mapArrayFromModel as mapTagFromModel,
+  mapFromModel as mapTagFromModel,
 } from './tagMapper';
 import {
   mapFromDto as mapSnippetFromDto,
-  mapArrayFromModel as mapSnippetFromModel,
+  mapFromModel as mapSnippetFromModel,
 } from './snippetMapper';
 
 function mapFromDto(id: string, dto: UserDTO): User {
-  var parsedTags = dto?.tags
-    ? Object.entries(dto.tags).map(([key, value]) => mapTagFromDto(key, value))
+  let parsedTags = dto?.tags
+    ? Object.entries(dto.tags).map(([key, value]) => mapTagFromDto(value))
     : [];
-  var parsedSnippets = dto?.snippets
+  let parsedSnippets = dto?.snippets
     ? Object.entries(dto.snippets).map(([key, value]) =>
-        mapSnippetFromDto(key, value, parsedTags)
+        mapSnippetFromDto(value, parsedTags)
       )
     : [];
+
   return {
     id: id,
     name: dto.name,
@@ -27,15 +28,17 @@ function mapFromDto(id: string, dto: UserDTO): User {
   } as User;
 }
 
-function mapFromSnapshot(snapshot: firebase.database.DataSnapshot) {
+function mapFromSnapshot(snapshot: firebase.database.DataSnapshot): User {
   return mapFromDto(snapshot.key!!, snapshot.val());
 }
 
 function mapFromModel(model: User): UserDTO {
   return {
     name: model.name,
-    tags: mapTagFromModel(model.tags),
-    snippets: mapSnippetFromModel(model.snippets),
+    tags: Object.fromEntries(model.tags.map(t => [t.id, mapTagFromModel(t)])),
+    snippets: Object.fromEntries(
+      model.snippets.map(s => [s.id, mapSnippetFromModel(s)])
+    ),
   } as UserDTO;
 }
 

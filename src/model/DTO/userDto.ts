@@ -1,11 +1,10 @@
-import BaseModelViewEntity from "./firebaseBaseDto";
-import SnippetDTO from "./snippetDto";
-import TagDTO from "./tagDto";
+import SnippetDTO from './snippetDto';
+import TagDTO from './tagDto';
 
 interface UserDTO {
-    name: string;
-    snippets: BaseModelViewEntity<SnippetDTO>
-    tags: BaseModelViewEntity<TagDTO>
+  name: string;
+  snippets: { [key: string]: SnippetDTO };
+  tags: { [key: string]: TagDTO };
 }
 
-export default UserDTO
+export default UserDTO;

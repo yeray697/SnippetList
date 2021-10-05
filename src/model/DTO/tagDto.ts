@@ -1,5 +1,6 @@
 interface TagDTO {
-    text: string
-  }
-  
-  export default TagDTO
+  id: string;
+  text: string;
+}
+
+export default TagDTO;

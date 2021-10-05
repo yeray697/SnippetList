@@ -1,12 +1,11 @@
 import SnippetDTO from '../model/DTO/snippetDto';
 import Tag from '../model/tag';
 import Snippet from '../model/snippet';
-import BaseModelViewEntity from '../model/DTO/firebaseBaseDto';
 
-function mapFromDto(id: string, snippet: SnippetDTO, tagList: Tag[]): Snippet {
+function mapFromDto(snippet: SnippetDTO, tagList: Tag[]): Snippet {
   var tags: Tag[] = parseTags(snippet.tags, tagList);
   return {
-    id: id,
+    id: snippet.id,
     title: snippet.title,
     description: snippet.description,
     pinned: snippet.pinned,
@@ -16,15 +15,12 @@ function mapFromDto(id: string, snippet: SnippetDTO, tagList: Tag[]): Snippet {
 
 function mapFromModel(model: Snippet): SnippetDTO {
   return {
+    id: model.id,
     title: model.title,
     description: model.description,
     pinned: model.pinned,
     tags: model.tags.map(t => t.id),
   } as SnippetDTO;
-}
-
-function mapArrayFromModel(model: Snippet[]): BaseModelViewEntity<SnippetDTO> {
-  return Object.fromEntries(model.map(m => [m.id, mapFromModel(m)]));
 }
 
 function parseTags(tags: string[], parsedTags: Tag[]) {
@@ -35,4 +31,4 @@ function parseTags(tags: string[], parsedTags: Tag[]) {
       });
 }
 
-export { mapFromDto, mapFromModel, mapArrayFromModel };
+export { mapFromDto, mapFromModel };
