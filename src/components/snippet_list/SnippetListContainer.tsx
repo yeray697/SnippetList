@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: 'uppercase',
     },
     pinnedItems: {
-      marginBottom: theme.spacing(8),
+      marginBottom: theme.spacing(4),
     },
     snackbarButton: {
       color: theme.palette.common.white,
