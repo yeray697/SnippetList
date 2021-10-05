@@ -41,7 +41,7 @@ const MenuSnippet: FC<Props> = ({ actions, handleClickMenuItem }) => {
     setAnchorEl(null);
   };
   return (
-    <section className={classes.root}>
+    <div className={classes.root}>
       <Tooltip title="Menu" placement="right">
         <IconButton
           aria-label="menu"
@@ -79,7 +79,7 @@ const MenuSnippet: FC<Props> = ({ actions, handleClickMenuItem }) => {
           );
         })}
       </Menu>
-    </section>
+    </div>
   );
 };
 

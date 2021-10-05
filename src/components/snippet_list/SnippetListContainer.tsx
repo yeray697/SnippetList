@@ -112,7 +112,7 @@ const SnippetListContainer = () => {
         <>
           <Search availableTags={['tag1', 'tag2']} />
           <AnimateSharedLayout>
-            <div
+            <section
               className={classes.pinnedItems}
               style={{
                 display: getSnippets()?.some(s => s.pinned) ? 'block' : 'none',
@@ -132,31 +132,27 @@ const SnippetListContainer = () => {
                 onEditButtonClicked={onEditButtonClicked}
                 onDeleteButtonClicked={onDeleteButtonClicked}
               />
-            </div>
-            <div>
-              <div
-                style={{
-                  display: getSnippets()?.some(s => !s.pinned)
-                    ? 'block'
-                    : 'none',
-                }}
+            </section>
+            <section
+              style={{
+                display: getSnippets()?.some(s => !s.pinned) ? 'block' : 'none',
+              }}
+            >
+              <Typography
+                variant="body2"
+                component="h1"
+                className={classes.title}
               >
-                <Typography
-                  variant="body2"
-                  component="h1"
-                  className={classes.title}
-                >
-                  Others
-                </Typography>
-                <SnippetList
-                  items={getSnippets()?.filter(s => !s.pinned)!!}
-                  onPinnedItemChange={onPinnedItemChange}
-                  onCopyButtonClicked={onCopyButtonClicked}
-                  onEditButtonClicked={onEditButtonClicked}
-                  onDeleteButtonClicked={onDeleteButtonClicked}
-                />
-              </div>
-            </div>
+                Others
+              </Typography>
+              <SnippetList
+                items={getSnippets()?.filter(s => !s.pinned)!!}
+                onPinnedItemChange={onPinnedItemChange}
+                onCopyButtonClicked={onCopyButtonClicked}
+                onEditButtonClicked={onEditButtonClicked}
+                onDeleteButtonClicked={onDeleteButtonClicked}
+              />
+            </section>
           </AnimateSharedLayout>
         </>
       )}

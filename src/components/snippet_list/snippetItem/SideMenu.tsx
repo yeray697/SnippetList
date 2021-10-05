@@ -27,8 +27,8 @@ interface Props {
 const SideMenu: FC<Props> = ({ handleButtonClick, actions, className }) => {
   const classes = useStyles();
   return (
-    <section className={[classes.root, className].join(' ')}>
-      <section className={classes.iconContainer}>
+    <aside className={[classes.root, className].join(' ')}>
+      <div className={classes.iconContainer}>
         <Tooltip title="Copy" placement="right">
           <IconButton
             aria-label="Copy"
@@ -38,9 +38,9 @@ const SideMenu: FC<Props> = ({ handleButtonClick, actions, className }) => {
             <FileCopyIcon />
           </IconButton>
         </Tooltip>
-      </section>
+      </div>
       <MenuSnippet actions={actions} handleClickMenuItem={handleButtonClick} />
-    </section>
+    </aside>
   );
 };
 

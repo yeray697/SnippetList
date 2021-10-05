@@ -51,7 +51,7 @@ const Content: FC<Props> = ({ title, description, tags, className }) => {
   const classes = useStyles();
   const titleDivRef = useRef<any>();
   return (
-    <section className={[classes.root, className].join(' ')}>
+    <div className={[classes.root, className].join(' ')}>
       {' '}
       <section className={classes.section}>
         <OverflowTooltip tooltip={title} divRef={titleDivRef} placement="top">
@@ -72,7 +72,7 @@ const Content: FC<Props> = ({ title, description, tags, className }) => {
           <ChipContainer tagList={tags} className={classes.chipContainer} />
         </section>
       )}
-    </section>
+    </div>
   );
 };
 

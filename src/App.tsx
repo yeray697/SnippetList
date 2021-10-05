@@ -10,14 +10,16 @@ function App() {
   return (
     <SnackbarProvider maxSnack={5}>
       <Header />
-      <Container fixed>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/Playground" component={Playground} />
-          </Switch>
-        </BrowserRouter>
-      </Container>
+      <main>
+        <Container fixed>
+          <BrowserRouter>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/Playground" component={Playground} />
+            </Switch>
+          </BrowserRouter>
+        </Container>
+      </main>
     </SnackbarProvider>
   );
 }

@@ -29,7 +29,7 @@ const Header = () => {
     console.log(exception);
   }
   return (
-    <div className={classes.root}>
+    <nav className={classes.root}>
       <AppBar position="fixed" color="primary" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
@@ -43,7 +43,7 @@ const Header = () => {
         </Toolbar>
       </AppBar>
       <div className={classes.space}></div>
-    </div>
+    </nav>
   );
 };
 

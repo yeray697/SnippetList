@@ -57,9 +57,9 @@ const Dialog: FC<Props> = ({ children, open = false, onClose }) => {
         }}
       ></motion.div>
 
-      <div className={classes.dialogContainer}>
+      <dialog className={classes.dialogContainer}>
         <Paper>{children}</Paper>
-      </div>
+      </dialog>
     </div>
   );
 };
