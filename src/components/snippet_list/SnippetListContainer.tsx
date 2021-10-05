@@ -1,19 +1,18 @@
-import { Button, Theme, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Theme, Typography } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
 import { SnackbarKey, useSnackbar } from 'notistack';
-import { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import Snippet from '../../model/snippet';
+import { useObjectVal } from 'react-firebase-hooks/database';
+import User from '../../model/user';
+import { mapFromDto as mapUserFromDto } from '../../mapper/userMapper';
 //ToDo
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { editSnippet, removeSnippet } from '../../service/snippetService';
 import Search from './Search';
 import SnippetList from './SnippetList';
 import { AnimateSharedLayout } from 'framer-motion';
-
-type ListProps = {
-  items: Snippet[] | undefined;
-};
+import { auth, db } from '../../service/firebase/firebaseManager';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,35 +34,34 @@ const useStyles = makeStyles((theme: Theme) =>
     snackbarButton: {
       color: theme.palette.common.white,
     },
+    loadingContainer: {
+      width: '100%',
+      paddingTop: '15%',
+      display: 'flex',
+      justifyContent: 'center',
+    },
   })
 );
 
-const SnippetListContainer = ({ items }: ListProps) => {
+const SnippetListContainer = () => {
   const classes = useStyles();
   const snackbar = useSnackbar();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
-  const [pinnedItems, setPinnedItems] = useState(items?.filter(i => i.pinned));
-  const [nonPinnedItems, setNonPinnedItems] = useState(
-    items?.filter(i => !i.pinned)
+  const [user, userDataLoading] = useObjectVal<User>(
+    db.ref('users/' + auth?.currentUser?.uid),
+    {
+      keyField: 'id',
+      transform: mapUserFromDto,
+    }
   );
 
-  const refreshLists = useCallback(() => {
-    setPinnedItems(items?.filter(i => i.pinned));
-    setNonPinnedItems(items?.filter(i => !i.pinned));
-  }, [items]);
-
-  useEffect(() => {
-    refreshLists();
-  }, [items, refreshLists]);
-
   function onPinnedItemChange(id: string, isPinned: boolean) {
-    let aux = items?.find(i => i.id === id);
+    let aux = getSnippets()?.find(i => i.id === id);
     if (aux) {
       aux.pinned = isPinned;
       editSnippet(aux);
     }
-    refreshLists();
   }
 
   function onCopyButtonClicked(content: string) {
@@ -98,51 +96,70 @@ const SnippetListContainer = ({ items }: ListProps) => {
     snackbar.closeSnackbar(key);
   };
 
+  const getSnippets = () => {
+    return user?.snippets;
+  };
+
   return (
     <div>
-      <Search availableTags={['tag1', 'tag2']} />
-      <AnimateSharedLayout>
-        <div
-          className={classes.pinnedItems}
-          style={{
-            display: pinnedItems && pinnedItems.length > 0 ? 'block' : 'none',
-          }}
-        >
-          <Typography variant="body2" component="h1" className={classes.title}>
-            Liked
-          </Typography>
-          <SnippetList
-            items={pinnedItems!!}
-            onPinnedItemChange={onPinnedItemChange}
-            onCopyButtonClicked={onCopyButtonClicked}
-            onEditButtonClicked={onEditButtonClicked}
-            onDeleteButtonClicked={onDeleteButtonClicked}
-          />
+      {userDataLoading && (
+        <div className={classes.loadingContainer}>
+          {' '}
+          <CircularProgress />{' '}
         </div>
-        <div>
-          <div
-            style={{
-              display:
-                nonPinnedItems && nonPinnedItems.length > 0 ? 'block' : 'none',
-            }}
-          >
-            <Typography
-              variant="body2"
-              component="h1"
-              className={classes.title}
+      )}
+      {!userDataLoading && (
+        <>
+          <Search availableTags={['tag1', 'tag2']} />
+          <AnimateSharedLayout>
+            <div
+              className={classes.pinnedItems}
+              style={{
+                display: getSnippets()?.some(s => s.pinned) ? 'block' : 'none',
+              }}
             >
-              Others
-            </Typography>
-            <SnippetList
-              items={nonPinnedItems!!}
-              onPinnedItemChange={onPinnedItemChange}
-              onCopyButtonClicked={onCopyButtonClicked}
-              onEditButtonClicked={onEditButtonClicked}
-              onDeleteButtonClicked={onDeleteButtonClicked}
-            />
-          </div>
-        </div>
-      </AnimateSharedLayout>
+              <Typography
+                variant="body2"
+                component="h1"
+                className={classes.title}
+              >
+                Liked
+              </Typography>
+              <SnippetList
+                items={getSnippets()?.filter(s => s.pinned)!!}
+                onPinnedItemChange={onPinnedItemChange}
+                onCopyButtonClicked={onCopyButtonClicked}
+                onEditButtonClicked={onEditButtonClicked}
+                onDeleteButtonClicked={onDeleteButtonClicked}
+              />
+            </div>
+            <div>
+              <div
+                style={{
+                  display: getSnippets()?.some(s => !s.pinned)
+                    ? 'block'
+                    : 'none',
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  component="h1"
+                  className={classes.title}
+                >
+                  Others
+                </Typography>
+                <SnippetList
+                  items={getSnippets()?.filter(s => !s.pinned)!!}
+                  onPinnedItemChange={onPinnedItemChange}
+                  onCopyButtonClicked={onCopyButtonClicked}
+                  onEditButtonClicked={onEditButtonClicked}
+                  onDeleteButtonClicked={onDeleteButtonClicked}
+                />
+              </div>
+            </div>
+          </AnimateSharedLayout>
+        </>
+      )}
     </div>
   );
 };
