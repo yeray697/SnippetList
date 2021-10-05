@@ -1,15 +1,17 @@
-import Tag from "../model/tag";
-import TagDTO from "../model/DTO/tagDto";
+import Tag from '../model/tag';
+import TagDTO from '../model/DTO/tagDto';
+import BaseModelViewEntity from '../model/DTO/firebaseBaseDto';
 
 function mapFromDto(id: string, tag: TagDTO): Tag {
-    return {id: id, text: tag.text} as Tag;
+  return { id: id, text: tag.text } as Tag;
 }
 
-//ToDo if necessary
-function mapFromModel(model: Tag) {//: BaseModelViewEntity<TagDTO> {
-    //return { id: model.id} as TagDTO;
-    //return mapFromModelBase(model);
-    //return dto;
+function mapFromModel(model: Tag): TagDTO {
+  return { text: model.text };
 }
 
-export {mapFromDto, mapFromModel};
+function mapArrayFromModel(model: Tag[]): BaseModelViewEntity<TagDTO> {
+  return Object.fromEntries(model.map(m => [m.id, mapFromModel(m)]));
+}
+
+export { mapFromDto, mapFromModel, mapArrayFromModel };

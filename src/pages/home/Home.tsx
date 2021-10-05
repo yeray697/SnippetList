@@ -1,20 +1,28 @@
 import SnippetListContainer from '../../components/snippet_list/SnippetListContainer';
 import { getUser } from '../../service/snippetService';
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import SnippetPage from '../snippet/Snippet';
-import { auth } from '../../service/firebase/firebaseManager';
+import { auth, loginAnonymous } from '../../service/firebase/firebaseManager';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import User from '../../model/user';
 
 const Home = () => {
   const [userAuth, loading] = useAuthState(auth);
-  const history = useHistory();
   const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
+    if (loading || (userAuth && !userAuth.isAnonymous)) return;
+    loginAnonymous(onErrorLogin);
+  }, [loading, userAuth]);
+
+  function onErrorLogin(exception: Error) {
+    console.log(exception);
+  }
+
+  useEffect(() => {
     if (loading) return;
-    if (!userAuth) return history.replace('/Login');
+    if (!userAuth) return;
 
     function onGetUserSuccessful(user: User) {
       setUser(user);
@@ -24,7 +32,7 @@ const Home = () => {
     }
 
     getUser(userAuth, onGetUserSuccessful, onGetUserError);
-  }, [userAuth, loading, history]);
+  }, [userAuth, loading]);
 
   return (
     <>
