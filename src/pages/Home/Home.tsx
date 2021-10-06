@@ -1,7 +1,7 @@
-import SnippetListContainer from '../../components/snippet_list/SnippetListContainer';
+import SnippetListContainer from '../../components/SnippetList/SnippetListContainer';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import SnippetPage from '../snippet/Snippet';
+import SnippetPage from '../Snippet/Snippet';
 import { auth, loginAnonymous } from '../../service/firebase/firebaseManager';
 import { useAuthState } from 'react-firebase-hooks/auth';
 

@@ -1,6 +1,6 @@
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core';
 import Snippet from '../../model/snippet';
-import SnippetItem from './snippetItem/SnippetItem';
+import SnippetItem from './SnippetItem/SnippetItem';
 import Masonry from 'react-masonry-css';
 import { motion } from 'framer-motion';
 

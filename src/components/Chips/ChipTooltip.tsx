@@ -1,7 +1,7 @@
 import { FC, useRef } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
-import OverflowTooltip from '../OverflowTooltip/overflow_tooltip';
+import OverflowTooltip from '../OverflowTooltip/OverflowTooltip';
 import Tag from '../../model/tag';
 
 interface Props {

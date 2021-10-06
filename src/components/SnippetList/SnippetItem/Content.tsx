@@ -1,7 +1,7 @@
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
 import { FC, useRef } from 'react';
 import ChipContainer from '../../Chips/ChipContainer';
-import OverflowTooltip from '../../OverflowTooltip/overflow_tooltip';
+import OverflowTooltip from '../../OverflowTooltip/OverflowTooltip';
 import Tag from '../../../model/tag';
 
 const useStyles = makeStyles((theme: Theme) =>

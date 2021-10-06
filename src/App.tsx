@@ -1,10 +1,9 @@
-import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './parts/header/Header';
-import Home from './pages/home/Home';
+import Home from './pages/Home/Home';
 import { Container } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
-import Playground from './pages/playground/Playground';
+import Playground from './pages/Playground/Playground';
 
 function App() {
   return (
