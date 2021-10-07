@@ -8,6 +8,7 @@ import Tag from '../../../model/tag';
 import SideMenu from './SideMenu';
 import { MenuActions } from './MenuSnippet';
 import Content from './Content';
+import { motion } from 'framer-motion';
 
 type Props = {
   id: string;
@@ -91,7 +92,7 @@ const SnippetItem = ({
   }
 
   return (
-    <article>
+    <motion.article layoutId={id}>
       <Paper elevation={3} variant="outlined" className={classes.root}>
         <Content
           className={classes.mainContent}
@@ -105,7 +106,7 @@ const SnippetItem = ({
           handleButtonClick={handleButtonClick}
         />
       </Paper>
-    </article>
+    </motion.article>
   );
 };
 

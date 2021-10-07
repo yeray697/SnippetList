@@ -2,7 +2,6 @@ import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core';
 import Snippet from '../../model/snippet';
 import SnippetItem from './SnippetItem/SnippetItem';
 import Masonry from 'react-masonry-css';
-import { motion } from 'framer-motion';
 
 type ListProps = {
   items: Snippet[];
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     column: {
       paddingLeft: theme.spacing(3),
       backgroundClip: 'padding-box',
-      '& > div': {
+      '& > article': {
         marginBottom: theme.spacing(3),
       },
     },
@@ -51,19 +50,18 @@ const SnippetList = ({
       columnClassName={classes.column}
     >
       {items.map((item, i) => (
-        <motion.div layoutId={item.id} key={item.id}>
-          <SnippetItem
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            tags={item.tags}
-            isPinned={item.pinned}
-            onPinnedItemChange={onPinnedItemChange}
-            onCopyButtonClicked={onCopyButtonClicked}
-            onEditButtonClicked={onEditButtonClick}
-            onDeleteButtonClicked={onDeleteButtonClicked}
-          />
-        </motion.div>
+        <SnippetItem
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          description={item.description}
+          tags={item.tags}
+          isPinned={item.pinned}
+          onPinnedItemChange={onPinnedItemChange}
+          onCopyButtonClicked={onCopyButtonClicked}
+          onEditButtonClicked={onEditButtonClick}
+          onDeleteButtonClicked={onDeleteButtonClicked}
+        />
       ))}
     </Masonry>
   );
