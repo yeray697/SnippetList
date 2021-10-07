@@ -20,7 +20,7 @@ function mapFromDto(dto: UserDTO): User {
     : [];
 
   return {
-    name: dto.name,
+    name: dto?.name,
     snippets: parsedSnippets,
     tags: parsedTags,
   } as User;

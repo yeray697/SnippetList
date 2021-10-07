@@ -56,7 +56,7 @@ const mergeAccounts = (newUser: firebase.User, oldUser: firebase.User) => {
       }
     })
     .then(() => {
-      if (anonymousUser.snippets && anonymousUser.snippets.length) {
+      if (anonymousUser?.snippets && anonymousUser.snippets.length) {
         getUserById(newUser.uid).then(snapshot => {
           if (snapshot.exists()) {
             db.ref(usersPath + newUser.uid).update(
