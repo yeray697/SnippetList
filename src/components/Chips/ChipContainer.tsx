@@ -40,7 +40,7 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
               text: '+' + (tagList.length - filteredList.length),
             } as Tag
           }
-          key="-1"
+          key="overflowChip"
         />
       )}
     </div>

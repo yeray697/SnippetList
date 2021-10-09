@@ -7,9 +7,9 @@ import { auth, loginWithGoogle } from '../../service/firebase/firebaseManager';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: { marginBottom: theme.spacing(4) },
-    appBar: {
+    root: {
       flexGrow: 1,
+      marginBottom: theme.spacing(4),
     },
     title: {
       flexGrow: 1,
@@ -29,21 +29,26 @@ const Header = () => {
     console.log(exception);
   }
   return (
-    <nav className={classes.root}>
-      <AppBar position="fixed" color="primary" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Snippets
-          </Typography>
-          {!loading && (!user || user.isAnonymous) && (
-            <Button color="inherit" onClick={() => onLoginWithGoogleClicked()}>
-              Login with Google
-            </Button>
-          )}
-        </Toolbar>
+    <>
+      <AppBar position="fixed" color="primary" className={classes.root}>
+        <nav>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              Snippets
+            </Typography>
+            {!loading && (!user || user.isAnonymous) && (
+              <Button
+                color="inherit"
+                onClick={() => onLoginWithGoogleClicked()}
+              >
+                Login with Google
+              </Button>
+            )}
+          </Toolbar>
+        </nav>
       </AppBar>
       <div className={classes.space}></div>
-    </nav>
+    </>
   );
 };
 
