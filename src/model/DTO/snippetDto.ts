@@ -4,6 +4,7 @@ interface SnippetDTO {
   description: string;
   tags: string[];
   pinned: boolean;
+  updTimeStamp: number | Object;
 }
 
 export default SnippetDTO;

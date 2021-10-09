@@ -6,6 +6,7 @@ interface Snippet extends BaseModel {
   description: string;
   tags: Tag[];
   pinned: boolean;
+  lastUpdated: Date | undefined;
 }
 
 export default Snippet;

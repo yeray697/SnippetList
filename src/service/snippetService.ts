@@ -85,9 +85,11 @@ const removeUserData = (user: firebase.User) => {
 
 const editSnippet = (snippet: Snippet) => {
   if (auth.currentUser) {
+    const dto = mapSnippetFromModel(snippet);
+    dto.updTimeStamp = firebase.database.ServerValue.TIMESTAMP;
     db.ref(
       usersPath + auth.currentUser?.uid + '/' + snippetsPath + snippet.id
-    ).update(mapSnippetFromModel(snippet));
+    ).update(dto);
   }
 };
 
