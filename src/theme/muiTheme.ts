@@ -38,6 +38,11 @@ muiTheme.overrides = {
       borderWidth: muiTheme.chip.borderWidth,
     },
   },
+  MuiPaper: {
+    rounded: {
+      borderRadius: muiTheme.spacing(1.25),
+    },
+  },
 };
 
 export default muiTheme;

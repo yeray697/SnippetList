@@ -1,11 +1,11 @@
 import SnippetListContainer from '../../components/SnippetList/SnippetListContainer';
 import { useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import SnippetPage from '../Snippet/Snippet';
+import { RouteComponentProps } from 'react-router-dom';
 import { auth, loginAnonymous } from '../../service/firebase/firebaseManager';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-const Home = () => {
+const Home = ({ match }: RouteComponentProps<{ id?: string }>) => {
+  let selectedSnippetId: string | null = match.params.id ?? null;
   const [userAuth, loginLoading] = useAuthState(auth);
 
   useEffect(() => {
@@ -19,14 +19,7 @@ const Home = () => {
 
   return (
     <>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/snippet/edit/:id(\d+)" component={SnippetPage} />
-          <Route exact path="/snippet/add" component={SnippetPage} />
-          <Route exact path="/snippet/:id(\d+)" component={SnippetPage} />
-        </Switch>
-      </BrowserRouter>
-      <SnippetListContainer />
+      <SnippetListContainer selectedSnippetId={selectedSnippetId} />
     </>
   );
 };

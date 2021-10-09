@@ -11,8 +11,11 @@ import { mapFromDto as mapUserFromDto } from '../../mapper/userMapper';
 import { editSnippet, removeSnippet } from '../../service/snippetService';
 import Search from './Search';
 import SnippetList from './SnippetList';
-import { AnimateSharedLayout } from 'framer-motion';
+import { AnimatePresence, AnimateSharedLayout } from 'framer-motion';
 import { auth, db } from '../../service/firebase/firebaseManager';
+import SelectedSnippet from './SelectedSnippet';
+import { useCallback, useEffect, useState } from 'react';
+import Dialog from '../Dialog/Dialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,8 +45,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-const SnippetListContainer = () => {
+type Props = {
+  selectedSnippetId: string | null;
+};
+const SnippetListContainer = ({ selectedSnippetId }: Props) => {
   const classes = useStyles();
   const snackbar = useSnackbar();
   const { enqueueSnackbar } = useSnackbar();
@@ -81,7 +86,7 @@ const SnippetListContainer = () => {
   }
 
   function onEditButtonClicked(item: Snippet) {
-    history.push('/snippet/edit/' + item.id);
+    history.push(item.id);
   }
 
   function onDeleteButtonClicked(id: string) {
@@ -96,9 +101,20 @@ const SnippetListContainer = () => {
     snackbar.closeSnackbar(key);
   };
 
-  const getSnippets = () => {
+  const getSnippets = useCallback(() => {
     return user?.snippets;
-  };
+  }, [user]);
+
+  const [selectedSnippet, setSelectedSnippet] = useState<Snippet | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    const newSnippetSelected = getSnippets()?.find(
+      s => s.id === selectedSnippetId
+    );
+    setSelectedSnippet(newSnippetSelected);
+  }, [selectedSnippetId, getSnippets]);
 
   return (
     <div>
@@ -111,7 +127,7 @@ const SnippetListContainer = () => {
       {!userDataLoading && (
         <>
           <Search availableTags={['tag1', 'tag2']} />
-          <AnimateSharedLayout>
+          <AnimateSharedLayout type="crossfade">
             <section
               className={classes.pinnedItems}
               style={{
@@ -153,6 +169,21 @@ const SnippetListContainer = () => {
                 onDeleteButtonClicked={onDeleteButtonClicked}
               />
             </section>
+
+            <AnimatePresence initial={true}>
+              {selectedSnippet && (
+                <Dialog onCloseToRoute="/" key="test">
+                  <SelectedSnippet
+                    key={selectedSnippetId}
+                    id={selectedSnippet.id}
+                    title={selectedSnippet.title}
+                    description={selectedSnippet.description}
+                    tags={selectedSnippet.tags}
+                    isPinned={selectedSnippet.pinned}
+                  />
+                </Dialog>
+              )}
+            </AnimatePresence>
           </AnimateSharedLayout>
         </>
       )}

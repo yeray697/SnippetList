@@ -1,64 +1,75 @@
-import { createStyles, makeStyles, Paper, Theme } from '@material-ui/core';
-import { motion } from 'framer-motion';
-import { FC } from 'react';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { motion, useIsPresent } from 'framer-motion';
+import { FC, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
-  open?: boolean;
-  onClose?: () => void;
+  onCloseToRoute: string;
 }
 
-const useStyle = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    container: {
-      width: '100%',
-      height: '100%',
-      position: 'absolute',
+    overlay: {
+      zIndex: theme.zIndex.appBar + 1,
+      position: 'fixed',
+      background: 'rgba(0, 0, 0, 0.6)',
+      willChange: 'opacity',
       top: 0,
-      left: 0,
-      zIndex: 1,
-    },
-    backdrop: {
-      width: '100%',
-      height: '100%',
-      left: 0,
-      top: 0,
-      backgroundColor: '#0006',
-    },
-    dialogContainer: {
-      position: 'absolute',
-      top: '10%',
+      bottom: 0,
       left: '50%',
-      transform: 'translate(-50%, 0)',
-      width: '50%',
+      transform: 'translateX(-50%)',
+      width: '100%',
+    },
+    dialog: {
+      zIndex: theme.zIndex.appBar + 2,
+      //Override browser styles
+      borderWidth: '0px',
+      backgroundColor: '#0000',
+    },
+    dialogContent: {
+      width: '100%',
+      height: '100%',
+      display: 'block',
+      pointerEvents: 'none',
+      top: 0,
+      left: 0,
+      right: 0,
+      margin: '0px auto',
+      position: 'fixed',
+      zIndex: 2,
+      overflow: 'hidden',
     },
   })
 );
 
-const collapsedBackdrop = {
-  opacity: 0,
-};
-const expandedBackdrop = {
-  opacity: 1,
-};
+const Dialog: FC<Props> = ({ children, onCloseToRoute }) => {
+  const classes = useStyles();
+  const history = useHistory();
+  const isPresent = useIsPresent();
+  function onClose() {
+    history.push(onCloseToRoute);
+  }
 
-const Dialog: FC<Props> = ({ children, open = false, onClose }) => {
-  const classes = useStyle();
-
+  const getVariants = useCallback(() => {
+    return {
+      initial: { opacity: isPresent ? 0 : 1 },
+      animate: { opacity: isPresent ? 1 : 0 },
+    };
+  }, [isPresent]);
   return (
-    <div className={classes.container} key="backdrop">
+    <div>
       <motion.div
+        key={'backdrop-dialog'}
+        initial="initial"
+        animate="animate"
+        variants={getVariants()}
+        transition={{ duration: 0.5 }}
+        style={{ pointerEvents: 'auto' }}
+        className={classes.overlay}
         onClick={onClose}
-        className={classes.backdrop}
-        initial={collapsedBackdrop}
-        animate={expandedBackdrop}
-        exit={collapsedBackdrop}
-        transition={{
-          duration: 0.5,
-        }}
-      ></motion.div>
-
-      <dialog className={classes.dialogContainer}>
-        <Paper>{children}</Paper>
+      />
+      <dialog open className={classes.dialog}>
+        <div className={classes.dialogContent}>{children}</div>
       </dialog>
     </div>
   );

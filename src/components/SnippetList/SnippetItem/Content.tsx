@@ -3,6 +3,7 @@ import { FC, useRef } from 'react';
 import ChipContainer from '../../Chips/ChipContainer';
 import OverflowTooltip from '../../OverflowTooltip/OverflowTooltip';
 import Tag from '../../../model/tag';
+import { motion } from 'framer-motion';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,36 +42,46 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
+  id: string;
   title: string;
   description: string;
   tags: Tag[];
   className?: string;
 }
 
-const Content: FC<Props> = ({ title, description, tags, className }) => {
+const Content: FC<Props> = ({ id, title, description, tags, className }) => {
   const classes = useStyles();
   const titleDivRef = useRef<any>();
   return (
     <div className={[classes.root, className].join(' ')}>
       {' '}
-      <section className={classes.section}>
+      <motion.section
+        className={classes.section}
+        layoutId={`snippet-item-title-${id}`}
+      >
         <OverflowTooltip tooltip={title} divRef={titleDivRef} placement="top">
           <div ref={titleDivRef} className={classes.title}>
             {title}
           </div>
         </OverflowTooltip>
-      </section>
+      </motion.section>
       {description && (
-        <section className={classes.section}>
+        <motion.section
+          className={classes.section}
+          layoutId={`snippet-item-description-${id}`}
+        >
           <Typography variant="body1" className={classes.description}>
             {description}
           </Typography>
-        </section>
+        </motion.section>
       )}
       {tags && tags.length > 0 && (
-        <section className={classes.section}>
+        <motion.section
+          className={classes.section}
+          layoutId={`snippet-item-tags-${id}`}
+        >
           <ChipContainer tagList={tags} className={classes.chipContainer} />
-        </section>
+        </motion.section>
       )}
     </div>
   );

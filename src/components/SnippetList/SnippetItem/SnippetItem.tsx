@@ -8,7 +8,7 @@ import Tag from '../../../model/tag';
 import SideMenu from './SideMenu';
 import { MenuActions } from './MenuSnippet';
 import Content from './Content';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type Props = {
   id: string;
@@ -92,21 +92,24 @@ const SnippetItem = ({
   }
 
   return (
-    <motion.article layoutId={id}>
-      <Paper elevation={3} variant="outlined" className={classes.root}>
-        <Content
-          className={classes.mainContent}
-          title={title}
-          description={description}
-          tags={tags}
-        />
-        <SideMenu
-          className={classes.sideMenu}
-          actions={actions}
-          handleButtonClick={handleButtonClick}
-        />
-      </Paper>
-    </motion.article>
+    <AnimatePresence initial={false}>
+      <motion.article layoutId={`snippet-item-${id}`}>
+        <Paper elevation={3} variant="outlined" className={classes.root}>
+          <Content
+            className={classes.mainContent}
+            id={id}
+            title={title}
+            description={description}
+            tags={tags}
+          />
+          <SideMenu
+            className={classes.sideMenu}
+            actions={actions}
+            handleButtonClick={handleButtonClick}
+          />
+        </Paper>
+      </motion.article>
+    </AnimatePresence>
   );
 };
 

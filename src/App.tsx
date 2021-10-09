@@ -10,11 +10,11 @@ function App() {
     <SnackbarProvider maxSnack={5}>
       <Header />
       <main>
-        <Container fixed>
+        <Container>
           <BrowserRouter>
             <Switch>
-              <Route exact path="/" component={Home} />
               <Route exact path="/Playground" component={Playground} />
+              <Route path={['/:id', '/']} component={Home} />
             </Switch>
           </BrowserRouter>
         </Container>
