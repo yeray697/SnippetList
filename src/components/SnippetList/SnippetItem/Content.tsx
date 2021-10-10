@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
       whiteSpace: 'nowrap',
       lineHeight: 1.45,
       textOverflow: 'ellipsis',
-      marginRight: '16px',
     },
     chipContainer: {
       marginBottom: theme.spacing(0.375),
@@ -60,9 +59,13 @@ const Content: FC<Props> = ({ id, title, description, tags, className }) => {
         layoutId={`snippet-item-title-${id}`}
       >
         <OverflowTooltip tooltip={title} divRef={titleDivRef} placement="top">
-          <div ref={titleDivRef} className={classes.title}>
+          <Typography
+            component="h3"
+            className={classes.title}
+            ref={titleDivRef}
+          >
             {title}
-          </div>
+          </Typography>
         </OverflowTooltip>
       </motion.section>
       {description && (

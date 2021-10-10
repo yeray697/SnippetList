@@ -33,7 +33,7 @@ const Header = () => {
       <AppBar position="fixed" color="primary" className={classes.root}>
         <nav>
           <Toolbar>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" component="h1" className={classes.title}>
               Snippets
             </Typography>
             {!loading && (!user || user.isAnonymous) && (

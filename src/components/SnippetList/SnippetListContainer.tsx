@@ -136,7 +136,7 @@ const SnippetListContainer = ({ selectedSnippetId }: Props) => {
             >
               <Typography
                 variant="body2"
-                component="h1"
+                component="h2"
                 className={classes.title}
               >
                 Liked
@@ -156,7 +156,7 @@ const SnippetListContainer = ({ selectedSnippetId }: Props) => {
             >
               <Typography
                 variant="body2"
-                component="h1"
+                component="h2"
                 className={classes.title}
               >
                 Others
@@ -172,7 +172,7 @@ const SnippetListContainer = ({ selectedSnippetId }: Props) => {
 
             <AnimatePresence initial={true}>
               {selectedSnippet && (
-                <Dialog onCloseToRoute="/" key="test">
+                <Dialog onCloseToRoute="/">
                   <SelectedSnippet
                     key={selectedSnippetId}
                     id={selectedSnippet.id}

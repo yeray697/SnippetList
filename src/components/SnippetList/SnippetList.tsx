@@ -15,11 +15,13 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
-      marginLeft: theme.spacing(-3),
       width: 'auto',
     },
     column: {
-      paddingLeft: theme.spacing(3),
+      paddingRight: theme.spacing(3),
+      '&:last-child': {
+        paddingRight: 0,
+      },
       backgroundClip: 'padding-box',
       '& > article': {
         marginBottom: theme.spacing(3),

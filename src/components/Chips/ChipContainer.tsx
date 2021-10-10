@@ -30,7 +30,7 @@ const ChipContainer: FC<Props> = ({ tagList, className }) => {
     <div ref={divRootRef} className={[classes.root, className].join(' ')}>
       {filteredList &&
         filteredList.map((tag, i) => {
-          return <ChipTooltip tag={tag} key={i} className={'test'} />;
+          return <ChipTooltip tag={tag} key={tag.text} className={'test'} />;
         })}
       {tagList.length !== filteredList.length && (
         <ChipTooltip
