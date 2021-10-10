@@ -25,17 +25,21 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
+      boxSizing: 'border-box',
       flexDirection: 'row',
+      justifyContent: 'space-between',
       paddingTop: theme.spacing(2),
       paddingLeft: theme.spacing(3),
       paddingBottom: theme.spacing(2),
       paddingRight: theme.spacing(3),
     },
     mainContent: {
-      marginRight: theme.spacing(1),
+      overflow: 'hidden',
       width: '100%',
     },
-    sideMenu: { marginLeft: 'auto' },
+    sideMenu: {
+      marginLeft: theme.spacing(1.5),
+    },
   })
 );
 
