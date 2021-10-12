@@ -1,7 +1,8 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { createStyles, IconButton, makeStyles, Theme } from '@material-ui/core';
 import { motion, useIsPresent } from 'framer-motion';
 import { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface Props {
   onCloseToRoute: string;
@@ -22,22 +23,32 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     dialog: {
       zIndex: theme.zIndex.appBar + 2,
+      top: 0,
+      overflow: 'hidden',
+      padding: 0,
+      width: '90%',
+      margin: '5% auto',
+      [theme.breakpoints.up('sm')]: {
+        width: '80%',
+      },
+      [theme.breakpoints.up('md')]: {
+        width: '70%',
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: '60%',
+      },
+      [theme.breakpoints.up('xl')]: {
+        width: '50%',
+      },
       //Override browser styles
       borderWidth: '0px',
       backgroundColor: '#0000',
     },
-    dialogContent: {
-      width: '100%',
-      height: '100%',
-      display: 'block',
-      pointerEvents: 'none',
-      top: 0,
-      left: 0,
-      right: 0,
-      margin: '0px auto',
-      position: 'fixed',
-      zIndex: 2,
-      overflow: 'hidden',
+    closeButton: {
+      position: 'absolute',
+      right: theme.spacing(1),
+      top: theme.spacing(1),
+      color: theme.palette.grey[500],
     },
   })
 );
@@ -69,7 +80,16 @@ const Dialog: FC<Props> = ({ children, onCloseToRoute }) => {
         onClick={onClose}
       />
       <dialog open className={classes.dialog}>
-        <div className={classes.dialogContent}>{children}</div>
+        <motion.div>
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        </motion.div>
+        {children}
       </dialog>
     </div>
   );

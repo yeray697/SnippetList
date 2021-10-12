@@ -15,18 +15,11 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     content: {
-      maxWidth: '50%',
-      overflow: 'hidden',
-      pointerEvents: 'auto',
-      position: 'relative',
-      width: '100%',
-      height: '100%',
-      margin: '0px auto',
-      padding: '2%',
       '& > .MuiPaper-root': {
-        padding: '5%',
-        width: '100%',
-        height: '100%',
+        paddingLeft: theme.spacing(5),
+        paddingTop: theme.spacing(3),
+        paddingRight: theme.spacing(5),
+        paddingBottom: theme.spacing(3),
         borderRadius: theme.spacing(2),
       },
     },
